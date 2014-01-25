@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import edu.scu.engr.acm.locationater.R;
+import edu.scu.engr.acm.locationater.services.LocationService;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
@@ -58,6 +59,7 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login);
+        startService(new Intent(this, LocationService.class));
 
         // Set up the login form.
         mEmail = getIntent().getStringExtra(EXTRA_EMAIL);

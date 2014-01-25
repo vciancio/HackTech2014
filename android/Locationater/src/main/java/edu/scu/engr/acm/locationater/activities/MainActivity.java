@@ -6,6 +6,7 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,6 +21,7 @@ import edu.scu.engr.acm.locationater.fragments.FriendsFragment;
 import edu.scu.engr.acm.locationater.fragments.MainFragment;
 import edu.scu.engr.acm.locationater.fragments.NavigationDrawerFragment;
 import edu.scu.engr.acm.locationater.fragments.SharesFragment;
+import edu.scu.engr.acm.locationater.services.LocationService;
 
 public class MainActivity extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -146,4 +148,8 @@ public class MainActivity extends Activity
         }
     }
 
+    public void onDestroy() {
+        super.onDestroy();
+        stopService(new Intent(this, LocationService.class));
+    }
 }
