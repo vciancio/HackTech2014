@@ -49,7 +49,7 @@ public class ServerComm {
         url_args.add(new BasicNameValuePair(Constants.USER_EMAIL, "vciancio@socaldevs.com"));
         url_args.add(new BasicNameValuePair(Constants.TIME, Long.toString(millis)));
         Object[] args = {Constants.URL_POST_SEND, url_args};
-        sendInfo.execute(args);
+//        sendInfo.execute(args);
         return true;
     }
 

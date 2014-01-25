@@ -1,5 +1,7 @@
 package edu.scu.engr.acm.locationater.util;
 
+import android.graphics.Typeface;
+
 /**
  * Created: vincente on 1/25/14.
  */
@@ -17,4 +19,6 @@ public class Constants {
     public static final String URL_BASE = "http://goatsgonewild.net";
     public static final String URL_POST_SEND = URL_BASE + "/sendLocation";
     public static final String URL_GET_FRIEND_LOCATION = URL_BASE + "/getFriendLocation";
+
+
 }

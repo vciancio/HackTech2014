@@ -2,6 +2,7 @@ package edu.scu.engr.acm.locationater.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
@@ -10,10 +11,16 @@ import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import edu.scu.engr.acm.locationater.R;
 import edu.scu.engr.acm.locationater.services.LocationService;
@@ -39,6 +46,7 @@ public class MainFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         TextView textView = (TextView) rootView.findViewById(R.id.section_label);
 
+
         //Get the Latitude and Longitude from JSON
         sp = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
         try {
@@ -51,4 +59,11 @@ public class MainFragment extends Fragment {
 
         return rootView;
     }
+
+
+
+
+
+
+
 }
