@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -101,6 +102,12 @@ public class LoginActivity extends Activity {
      * errors are presented and no actual login attempt is made.
      */
     public void attemptLogin() {
+
+        /* Temp Placeholder to circumvent the login sequence */
+        Intent i = new Intent(this, MainActivity.class);
+        this.startActivity(i);
+        /* */
+
         if (mAuthTask != null) {
             return;
         }
