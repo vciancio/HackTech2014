@@ -15,4 +15,7 @@
     <string name="mode">[mode]</string>
     <string name="share_with">Text to share:</string>
 
+    <string name="format_distance">Distance: %smi</string>
+    <string name="format_time">T-%s min</string>
+
 </resources>

@@ -1,20 +1,14 @@
 package edu.scu.engr.acm.locationater.activities;
 
-import android.app.Activity;
-;
 import android.app.ActionBar;
-import android.app.Fragment;
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.support.v4.widget.DrawerLayout;
-import android.widget.TextView;
 
 import edu.scu.engr.acm.locationater.R;
 import edu.scu.engr.acm.locationater.fragments.FriendsFragment;
@@ -23,6 +17,8 @@ import edu.scu.engr.acm.locationater.fragments.NavigationDrawerFragment;
 import edu.scu.engr.acm.locationater.fragments.SharesFragment;
 import edu.scu.engr.acm.locationater.services.EventListeningService;
 import edu.scu.engr.acm.locationater.services.LocationService;
+
+;
 
 public class MainActivity extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -61,7 +57,7 @@ public class MainActivity extends Activity
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
-        switch(position){
+        switch (position) {
             case 0:
                 transaction.replace(R.id.container, MainFragment.getInstance());
                 mTitle = "Home";
