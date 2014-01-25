@@ -1,4 +1,4 @@
-package edu.scu.engr.acm.locationater;
+package edu.scu.engr.acm.locationater.activities;
 
 import android.app.Activity;
 ;
@@ -6,18 +6,20 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import edu.scu.engr.acm.locationater.R;
+import edu.scu.engr.acm.locationater.fragments.FriendsFragment;
+import edu.scu.engr.acm.locationater.fragments.MainFragment;
+import edu.scu.engr.acm.locationater.fragments.NavigationDrawerFragment;
+import edu.scu.engr.acm.locationater.fragments.SharesFragment;
 
 public class MainActivity extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -39,7 +41,7 @@ public class MainActivity extends Activity
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
-        mTitle = getTitle();
+        mTitle = "Home";
 
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
@@ -53,12 +55,25 @@ public class MainActivity extends Activity
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
+        switch(position){
+            case 0:
+                transaction.replace(R.id.container, MainFragment.getInstance());
+                mTitle = "Home";
+                break;
 
-        if (position == 1) {
-            transaction.replace(R.id.container, new MainFragment());
-            mTitle = "Home";
-        } else {
-            transaction.replace(R.id.container, new MainFragment());
+            case 1:
+                transaction.replace(R.id.container, FriendsFragment.getInstance());
+                mTitle = "Friends";
+                break;
+
+            case 2:
+                transaction.replace(R.id.container, SharesFragment.getInstance());
+                mTitle = "Shares";
+                break;
+
+            default:
+                transaction.replace(R.id.container, MainFragment.getInstance());
+                break;
         }
         transaction.commit();
     }
