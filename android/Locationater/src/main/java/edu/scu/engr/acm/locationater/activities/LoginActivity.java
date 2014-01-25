@@ -107,6 +107,7 @@ public class LoginActivity extends Activity {
 
         /* Temp Placeholder to circumvent the login sequence */
         Intent i = new Intent(this, MainActivity.class);
+        finish();
         this.startActivity(i);
         /* */
 

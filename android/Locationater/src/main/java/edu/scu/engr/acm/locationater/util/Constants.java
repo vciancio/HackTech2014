@@ -10,6 +10,11 @@ public class Constants {
 
     public static final String JSON_LOCATION = "json_location";
 
+    public static final String TIME = "time";
+    public static final String USER_EMAIL = "email";
     public static final String LATITUDE = "latitude";
     public static final String LONGITUTDE = "longitude";
+    public static final String URL_BASE = "http://goatsgonewild.net";
+    public static final String URL_POST_SEND = URL_BASE + "/sendLocation";
+    public static final String URL_GET_FRIEND_LOCATION = URL_BASE + "/getFriendLocation";
 }

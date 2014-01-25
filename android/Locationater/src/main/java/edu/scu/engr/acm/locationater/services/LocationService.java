@@ -16,7 +16,10 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
+
 import edu.scu.engr.acm.locationater.util.Constants;
+import edu.scu.engr.acm.locationater.util.ServerComm;
 
 /**
  * Created: vincente on 1/25/14.
@@ -24,7 +27,6 @@ import edu.scu.engr.acm.locationater.util.Constants;
 public class LocationService extends Service {
     private LocationManager locationManager;
     private PersonalLocationListerner locationListener;
-    private String locationProvider = LocationManager.NETWORK_PROVIDER;
     private SharedPreferences sp;
     private Location mLocation;
 
@@ -38,8 +40,10 @@ public class LocationService extends Service {
         locationListener = new PersonalLocationListerner();
 
         //Get an Initial Position of the user so we can start our process
-        mLocation = locationManager.getLastKnownLocation(locationProvider);
-        sp = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+        mLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        if (Constants.DEBUGGING)
+            Log.i("LocationService", "" + mLocation.toString());
+        sp = PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
         storeJsonLocation(mLocation);
     }
 
@@ -62,20 +66,13 @@ public class LocationService extends Service {
             Log.i("LocationService", "In onDestroy... Bye Bye");
     }
 
-    public double getCurrentLatitude() {
-        return mLocation.getLatitude();
-    }
-
-    public double getCurrentLongitude() {
-        return mLocation.getLongitude();
-    }
-
     void storeJsonLocation(Location location) {
         try {
             JSONObject locationJson = new JSONObject();
             locationJson.put(Constants.LATITUDE, location.getLatitude());
             locationJson.put(Constants.LONGITUTDE, location.getLongitude());
-            sp.edit().putString(Constants.JSON_LOCATION, locationJson.toString());
+            sp.edit().putString(Constants.JSON_LOCATION, locationJson.toString()).commit();
+            ServerComm.sendLocation(location.getLatitude(), location.getLongitude(), System.currentTimeMillis());
         } catch (JSONException e) {
             e.printStackTrace();
         }
