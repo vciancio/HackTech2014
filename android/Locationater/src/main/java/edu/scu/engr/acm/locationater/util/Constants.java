@@ -8,17 +8,24 @@ import android.graphics.Typeface;
 public class Constants {
     public static final boolean DEBUGGING = true;
 
-    public static final int TIME_DELAY = 1000 * 60 * 2; //Millis * seconds * minutes
+    public static final int TIME_DELAY = 1000 * 60 * 1; //Millis * seconds * minutes
 
     public static final String JSON_LOCATION = "json_location";
 
     public static final String TIME = "time";
+    public static final String USER_PASSWORD = "pass";
     public static final String USER_EMAIL = "email";
+    public static final String MESSAGE = "message";
+    public static final String DISTANCE = "distance";
+    public static final String ID_EVENT = "id_event";
+    public static final String USER_NAME = "username";
     public static final String LATITUDE = "latitude";
     public static final String LONGITUTDE = "longitude";
+
+    public static final String ID_NOTIFY = "notify_type";
+
     public static final String URL_BASE = "http://goatsgonewild.net";
+    public static final String URL_GET_EVENTS = URL_BASE + "/getEvent";
     public static final String URL_POST_SEND = URL_BASE + "/sendLocation";
     public static final String URL_GET_FRIEND_LOCATION = URL_BASE + "/getFriendLocation";
-
-
 }

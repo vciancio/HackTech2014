@@ -1,7 +1,7 @@
 package edu.scu.engr.acm.locationater.util;
 
-import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -11,50 +11,102 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created: vincente on 1/25/14.
  */
 public class ServerComm {
 
-    public static boolean verifyUser(final String email, final String password) {
+    public ServerComm() {
+
+    }
+
+    public boolean verifyUser(final String email, final String password) {
         // TODO: Implement a method to verify the user to log-in
+        List<NameValuePair> url_args = new ArrayList<NameValuePair>();
+
         return true;
     }
 
-    public static boolean createUser(final String email, final String password,
-                                     final String firstName, final String lastName) {
+    //First Object in the array is the event id (int), the second is the name of the person whom
+    //Is requesting you to share your location (string)
+    public Object[] hasEvent() {
+
+        List<NameValuePair> url_args = new ArrayList<NameValuePair>();
+        Object[] args = {Constants.URL_GET_EVENTS, url_args};
+        int eventid = -1;
+        String name = "";
+        SendInfo sendInfo = new SendInfo();
+        sendInfo.execute(args);
+        try {
+            JSONObject jsonObject = new JSONObject((String) sendInfo.get());
+            eventid = jsonObject.getInt(Constants.ID_EVENT);
+            name = jsonObject.getString(Constants.USER_NAME);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Object[] passing = {String.valueOf(eventid), name};
+        if (Constants.DEBUGGING)
+            Log.i("ServerComm", "Passing: " + eventid + ", " + name);
+        return passing;
+    }
+
+    public boolean createUser(final String email, final String password,
+                              final String firstName, final String lastName) {
         // TODO: Implement a method to verify the user to log-in
+        List<NameValuePair> url_args = new ArrayList<NameValuePair>();
 
         return true;
     }
 
-    public static JSONArray getFriends(final String email, final String password) {
+    public JSONArray getFriends(final String email, final String password) {
 
         // TODO: Implement method which returns a JSONArray of User Values
+        List<NameValuePair> url_args = new ArrayList<NameValuePair>();
 
         return null;
     }
 
-    public static boolean sendLocation(final double latitude, final double longitude, long millis) {
+    //Returns distance as an integer
+    public int sendLocation(final double latitude, final double longitude, long millis, int eventId) {
 
         List<NameValuePair> url_args = new ArrayList<NameValuePair>();
         url_args.add(new BasicNameValuePair(Constants.LATITUDE, Double.toString(latitude)));
         url_args.add(new BasicNameValuePair(Constants.LONGITUTDE, Double.toString(longitude)));
         url_args.add(new BasicNameValuePair(Constants.USER_EMAIL, "vciancio@socaldevs.com"));
         url_args.add(new BasicNameValuePair(Constants.TIME, Long.toString(millis)));
+        url_args.add(new BasicNameValuePair(Constants.ID_EVENT, Integer.toString(eventId)));
         Object[] args = {Constants.URL_POST_SEND, url_args};
-//        sendInfo.execute(args);
-        return true;
+        SendInfo sendInfo = new SendInfo();
+        sendInfo.execute(args);
+
+        JSONObject response = null;
+        int distance = 0;
+
+        try {
+            response = new JSONObject((String) sendInfo.get());
+            distance = response.getInt(Constants.DISTANCE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return distance;
     }
 
     //First Object is the URL as a string. The Second is a List<NameValuePair> for the url arguments
-    private static AsyncTask<Object, Object, Object> sendInfo = new AsyncTask<Object, Object, Object>() {
+    private class SendInfo extends AsyncTask<Object, Object, Object> {
         HttpClient httpClient;
         HttpPost httpPost;
 
@@ -65,11 +117,11 @@ public class ServerComm {
             try {
                 httpPost.setEntity(new UrlEncodedFormEntity((List<NameValuePair>) params[1]));
                 HttpResponse response = httpClient.execute(httpPost);
-                return new JSONObject(response.getEntity().getContent().toString());
+                return response.getEntity().getContent().toString();
             } catch (Exception e) {
                 e.printStackTrace();
                 return false;
             }
         }
-    };
+    }
 }

@@ -55,7 +55,6 @@ public class LocationService extends Service {
 
         if (Constants.DEBUGGING)
             Log.i("LocationService", "Created the Service and location Manager!");
-        // TODO: Implement locationManger to request location updates and activate a pending intent when the user gets close enough
         return START_STICKY;
     }
 
@@ -72,7 +71,13 @@ public class LocationService extends Service {
             locationJson.put(Constants.LATITUDE, location.getLatitude());
             locationJson.put(Constants.LONGITUTDE, location.getLongitude());
             sp.edit().putString(Constants.JSON_LOCATION, locationJson.toString()).commit();
-            ServerComm.sendLocation(location.getLatitude(), location.getLongitude(), System.currentTimeMillis());
+            if (sp.getInt(Constants.ID_EVENT, -1) != -1) {
+                if (Constants.DEBUGGING)
+                    Log.i("LocationService", "Sending to Server, event_id: " + sp.getInt(Constants.ID_EVENT, -1));
+                ServerComm comms = new ServerComm();
+                comms.sendLocation(location.getLatitude(), location.getLongitude(), System.currentTimeMillis() / 1000,
+                        sp.getInt(Constants.ID_EVENT, -1));
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

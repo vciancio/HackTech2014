@@ -21,6 +21,7 @@ import edu.scu.engr.acm.locationater.fragments.FriendsFragment;
 import edu.scu.engr.acm.locationater.fragments.MainFragment;
 import edu.scu.engr.acm.locationater.fragments.NavigationDrawerFragment;
 import edu.scu.engr.acm.locationater.fragments.SharesFragment;
+import edu.scu.engr.acm.locationater.services.EventListeningService;
 import edu.scu.engr.acm.locationater.services.LocationService;
 
 public class MainActivity extends Activity
@@ -51,6 +52,7 @@ public class MainActivity extends Activity
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
         startService(new Intent(this, LocationService.class));
+        startService(new Intent(this, EventListeningService.class));
     }
 
     @Override

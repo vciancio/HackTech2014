@@ -5,9 +5,11 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -18,6 +20,8 @@ import android.widget.TextView;
 
 import edu.scu.engr.acm.locationater.R;
 import edu.scu.engr.acm.locationater.services.LocationService;
+import edu.scu.engr.acm.locationater.util.Constants;
+import edu.scu.engr.acm.locationater.util.ServerComm;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
@@ -210,20 +214,11 @@ public class LoginActivity extends Activity {
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
+            ServerComm comms = new ServerComm();
+            if (comms.verifyUser(mEmail, mPassword)) {
+                SharedPreferences sp = getSharedPreferences("cred", MODE_PRIVATE);
+                sp.edit().putString(Constants.USER_EMAIL, mEmail)
+                        .putString(Constants.USER_PASSWORD, mPassword).commit();
             }
 
             // TODO: register the new account here.
