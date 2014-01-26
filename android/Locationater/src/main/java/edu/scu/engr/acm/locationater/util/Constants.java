@@ -15,6 +15,8 @@ public class Constants {
     public static final String TIME = "time";
     public static final String ERROR = "Error";
     public static final String SUCCESS = "Success";
+    public static final String USER_F_NAME = "first";
+    public static final String USER_L_NAME = "last";
     public static final String USER_PASSWORD = "pass";
     public static final String USER_EMAIL = "email";
     public static final String MESSAGE = "message";

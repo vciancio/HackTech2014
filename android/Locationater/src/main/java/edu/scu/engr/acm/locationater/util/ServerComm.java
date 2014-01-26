@@ -190,10 +190,12 @@ public class ServerComm {
             response = new JSONObject(String.valueOf(sendInfo.get()));
             if (!response.getBoolean(Constants.SUCCESS)) {
                 if (Constants.DEBUGGING)
-                    Log.i("ServerConn:addFriend", "Failed with error: #" +
+                    Log.i("ServerConn:addFriend", "Failed to add friend with error: #" +
                             response.getInt(Constants.ERROR));
                 return false;
             }
+
+            Log.i("ServerConn:addFriend", "Reached this point");
 
             // Add Friend to database here
             FriendsDatabase friendsData = new FriendsDatabase(context);
@@ -201,13 +203,19 @@ public class ServerComm {
 
             // Get node id, first name, and last name from database
             String nodeId = response.getString(Constants.USER_NODE_ID);
-            String firstName = response.getString(Constants.URL_ARG_F_NAME);
-            String lastName = response.getString(Constants.URL_ARG_L_NAME);
+            String firstName = response.getString(Constants.USER_F_NAME);
+            String lastName = response.getString(Constants.USER_L_NAME);
 
             // And insert friend to database
             friendsData.createFriend(nodeId, firstName, lastName, email);
 
+            Log.i("ServerConn:addFriend", "Added: " +
+                friendsData.getAllFriends());
+
+            friendsData.close();
+
         } catch (Exception e) {
+            Log.i("ServerConn:addFriend", "Exception: ");
             e.printStackTrace();
             return false;
         }
