@@ -22,5 +22,7 @@
     <string name="dialog_friend_add_message">Type in your friend\'s email.</string>
     <string name="dialog_friend_add_successful">You have a new Friend!</string>
     <string name="dialog_friend_add_fail">Couldn\'t add your friend :(</string>
+    <string name="signup">Failed to create Account</string>
+    <string name="signup_fail">Failed to create user</string>
 
 </resources>

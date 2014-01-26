@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
@@ -28,14 +29,6 @@ import edu.scu.engr.acm.locationater.util.ServerComm;
  * well.
  */
 public class LoginActivity extends Activity {
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello",
-            "bar@example.com:world"
-    };
 
     /**
      * The default email to populate the email field with.
@@ -62,8 +55,18 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_login);
         startService(new Intent(this, LocationService.class));
+        SharedPreferences sp = getSharedPreferences("cred", MODE_PRIVATE);
+        if (!sp.getString(Constants.USER_EMAIL, "").isEmpty() &&
+                !sp.getString(Constants.USER_PASSWORD, "").isEmpty()) {
+            if (Constants.DEBUGGING)
+                Log.i("LoginActivity", "Already Logged in, going to Main Activity!");
+            Intent i = new Intent(this, MainActivity.class);
+            finish();
+            startActivity(i);
+        }
+
+        setContentView(R.layout.activity_login);
 
         // Set up the login form.
         mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
@@ -109,7 +112,7 @@ public class LoginActivity extends Activity {
      */
     public void attemptLogin() {
 
-        /* Temp Placeholder to circumvent the login sequence */
+        /* Temp Placeholder to circumvent the login sequence
         Intent i = new Intent(this, MainActivity.class);
         finish();
         this.startActivity(i);
@@ -210,19 +213,12 @@ public class LoginActivity extends Activity {
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
             ServerComm comms = new ServerComm();
-            if (comms.verifyUser(mEmail, mPassword)) {
-                SharedPreferences sp = getSharedPreferences("cred", MODE_PRIVATE);
-                sp.edit().putString(Constants.USER_EMAIL, mEmail)
-                        .putString(Constants.USER_PASSWORD, mPassword).commit();
-            }
-
-            // TODO: register the new account here.
-            return true;
+            return comms.verifyUser(mEmail, mPassword);
         }
 
         @Override
@@ -231,6 +227,13 @@ public class LoginActivity extends Activity {
             showProgress(false);
 
             if (success) {
+                Intent i = new Intent(getApplicationContext(), SignUpActivity.class);
+                Bundle extras = new Bundle();
+                extras.putString(Constants.USER_EMAIL, mEmail);
+                extras.putString(Constants.USER_PASSWORD, mPassword);
+                i.putExtras(extras);
+                finish();
+                startActivity(i);
 
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
