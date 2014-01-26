@@ -17,5 +17,9 @@
 
     <string name="format_distance">Distance: %smi</string>
     <string name="format_time">T-%s min</string>
+    <string name="dialog_friend_add_title">Add a Friend</string>
+    <string name="dialog_friend_add_message">Type in your friend\'s email.</string>
+    <string name="dialog_friend_add_successful">You have a new Friend!</string>
+    <string name="dialog_friend_add_fail">Couldn\'t add your friend :(</string>
 
 </resources>

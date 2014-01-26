@@ -89,7 +89,7 @@ public class ServerComm {
         url_args.add(new BasicNameValuePair(Constants.USER_EMAIL, "vciancio@socaldevs.com"));
         url_args.add(new BasicNameValuePair(Constants.TIME, Long.toString(millis)));
         url_args.add(new BasicNameValuePair(Constants.ID_EVENT, Integer.toString(eventId)));
-        Object[] args = {Constants.URL_POST_SEND, url_args};
+        Object[] args = {Constants.URL_SEND_LOCATION, url_args};
         SendInfo sendInfo = new SendInfo();
         sendInfo.execute(args);
 
@@ -103,6 +103,33 @@ public class ServerComm {
             e.printStackTrace();
         }
         return distance;
+    }
+
+    public boolean addFriend(String email) {
+        SendInfo sendInfo = new SendInfo();
+
+        List<NameValuePair> url_args = new ArrayList<NameValuePair>();
+        url_args.add(new BasicNameValuePair(Constants.URL_ARG_EMAIL, email));
+
+        Object[] args = {Constants.URL_ADD_USER, url_args};
+        sendInfo.execute(args);
+
+        JSONObject response = null;
+        try {
+            response = new JSONObject((String) sendInfo.get());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        if (response == null)
+            return false;
+
+        // TODO: Add Friend to database here
+        return true;
     }
 
     //First Object is the URL as a string. The Second is a List<NameValuePair> for the url arguments

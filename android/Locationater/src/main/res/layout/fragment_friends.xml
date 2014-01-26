@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/add_contact"
-        android:id="@+id/button"
+        android:id="@+id/button_add_friend"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true" />
@@ -20,5 +20,6 @@
         android:id="@+id/listView"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_above="@+id/button" />
+        android:layout_above="@+id/button_add_friend" />
+
 </RelativeLayout>

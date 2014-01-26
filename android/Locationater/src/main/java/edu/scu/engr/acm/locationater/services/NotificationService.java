@@ -28,7 +28,8 @@ public class NotificationService extends Service {
 
     }
 
-    /* Must Pass:
+    /*
+        Must Pass:
             Name & Event Id, and Notify Id
      */
     public int onStartCommand(Intent intent, int flags, int startId) {
