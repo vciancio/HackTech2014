@@ -8,7 +8,7 @@ import android.graphics.Typeface;
 public class Constants {
     public static final boolean DEBUGGING = true;
 
-    public static final int TIME_DELAY = 1000 * 60 * 1; //Millis * seconds * minutes
+    public static final int TIME_DELAY = 1000 * 10; //Millis * seconds * minutes
 
     public static final String JSON_LOCATION = "json_location";
 

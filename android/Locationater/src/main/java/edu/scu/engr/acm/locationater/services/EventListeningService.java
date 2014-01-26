@@ -65,7 +65,7 @@ public class EventListeningService extends Service {
         //If -1, we will start the Alarm Manager and keep on checking for a certain amount of time
         //If  0, we will notify the user that the person is near you.
         //If **, we are being asked if we can share our data and will display the appropriate notification
-        if (sharedEvents.size() == 0) {
+        if (eventsJSON.length() == 0) {
             AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             //Create the Intent which we are going to have started when we wake-up
             i = new Intent(this, EventListeningService.class);

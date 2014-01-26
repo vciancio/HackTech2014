@@ -61,8 +61,8 @@ public class NotificationService extends Service {
                         JSONObject eventJSON = eventsJSON.getJSONObject(i);
                         builder.setContentText(eventJSON.getString("description"));
                         builder.setContentTitle(eventJSON.getString("title"));
-                        extras.putString(Constants.EVENT_NODE_ID, String.valueOf(eventJSON.getInt("eID")));
-                        notifyId = eventJSON.getInt("eID");
+                        notifyId = Integer.parseInt(eventJSON.getString("eID"));
+                        extras.putInt(Constants.EVENT_NODE_ID, notifyId);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -70,7 +70,7 @@ public class NotificationService extends Service {
                     Intent shareIntent = new Intent(this, ShareLocationService.class);
                     shareIntent.putExtras(extras);
                     PendingIntent pendingShareIntent =
-                            PendingIntent.getService(getBaseContext(), 0, shareIntent, 0);
+                            PendingIntent.getService(getBaseContext(), 0, shareIntent, PendingIntent.FLAG_ONE_SHOT);
                     builder.addAction(android.R.drawable.ic_menu_share, "Share!", pendingShareIntent);
                     builder.setSmallIcon(R.drawable.ic_launcher);
                     notificationManager.notify(notifyId, builder.build());
