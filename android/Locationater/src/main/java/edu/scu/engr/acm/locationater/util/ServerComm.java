@@ -40,14 +40,16 @@ public class ServerComm {
 
         List<NameValuePair> url_args = new ArrayList<NameValuePair>();
         Object[] args = {Constants.URL_GET_EVENTS, url_args};
+        JSONObject response = null;
         int eventid = -1;
-        String name = "";
+        String name = "Missingno";
         SendInfo sendInfo = new SendInfo();
         sendInfo.execute(args);
+
         try {
-            JSONObject jsonObject = new JSONObject((String) sendInfo.get());
-            eventid = jsonObject.getInt(Constants.ID_EVENT);
-            name = jsonObject.getString(Constants.USER_NAME);
+            response = new JSONObject(String.valueOf(sendInfo.get()));
+            eventid = response.getInt(Constants.ID_EVENT);
+            name = response.getString(Constants.USER_NAME);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -97,7 +99,7 @@ public class ServerComm {
         int distance = 0;
 
         try {
-            response = new JSONObject((String) sendInfo.get());
+            response = new JSONObject(String.valueOf(sendInfo.get()));
             distance = response.getInt(Constants.DISTANCE);
         } catch (Exception e) {
             e.printStackTrace();
@@ -116,7 +118,7 @@ public class ServerComm {
 
         JSONObject response = null;
         try {
-            response = new JSONObject((String) sendInfo.get());
+            response = new JSONObject(String.valueOf(sendInfo.get()));
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
