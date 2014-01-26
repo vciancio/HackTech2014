@@ -62,7 +62,7 @@ public class LoginActivity extends Activity {
             if (Constants.DEBUGGING)
                 Log.i("LoginActivity", "Already Logged in, going to Main Activity!");
             Intent i = new Intent(this, MainActivity.class);
-            //finish();
+            finish();
             startActivity(i);
         }
 

@@ -31,7 +31,8 @@ public class Constants {
     public static final String URL_LOGIN = URL_BASE + "/Login.py";
     public static final String URL_ADD_FRIEND = URL_BASE + "/AddFriend.py";
     public static final String URL_ADD_EVENT = URL_BASE + "/AddEvent.py";
-    public static final String URL_GET_EVENTS = URL_BASE + "/EventRequest.py";
+    public static final String URL_GET_EVENTS = URL_BASE + "/CheckForEvents.py";
+    public static final String URL_CONFIRM_EVENT = URL_BASE + "/ConfirmEvent.py";
     public static final String URL_SEND_LOCATION = URL_BASE + "/UpdateLocation.py";
     public static final String URL_ARG_PASSWORD = "P";
     public static final String URL_ARG_EMAIL = "E";

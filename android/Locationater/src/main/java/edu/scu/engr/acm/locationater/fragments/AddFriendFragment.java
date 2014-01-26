@@ -26,7 +26,4 @@ public class AddFriendFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_add_friend, container, false);
         return rootView;
     }
-
-
-
 }

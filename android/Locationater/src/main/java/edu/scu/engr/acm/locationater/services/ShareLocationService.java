@@ -31,16 +31,16 @@ public class ShareLocationService extends Service {
         super.onStartCommand(intent, flags, startId);
 
         ServerComm comms = new ServerComm();
+        comms.confirmEvent(intent.getExtras().getInt(Constants.EVENT_NODE_ID), getBaseContext());
         comms.sendLocation(sp.getLong(Constants.LONGITUTDE, 0), sp.getLong(Constants.LATITUDE, 0),
                 System.currentTimeMillis(), intent.getExtras().getInt(Constants.EVENT_NODE_ID), getBaseContext());
-
         Intent i = new Intent(this, EventListeningService.class);
         startService(i);
 
         NotificationManager notificationManager = (NotificationManager)
                 getSystemService(NOTIFICATION_SERVICE);
 
-        notificationManager.cancel(3309);
+        notificationManager.cancel(intent.getExtras().getInt(Constants.EVENT_NODE_ID));
 
         stopSelf();
         return START_STICKY;
