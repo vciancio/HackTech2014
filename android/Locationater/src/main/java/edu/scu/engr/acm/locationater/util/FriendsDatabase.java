@@ -39,11 +39,12 @@ public class FriendsDatabase {
         friendsTable.close();
     }
 
-    public Friend createFriend(String firstname) {
+    public Friend createFriend(String nodeid, String firstname, String lastname, String email) {
         ContentValues values = new ContentValues();
+        values.put(FriendsTable.COLUMN_NODEID, nodeid);
         values.put(FriendsTable.COLUMN_FIRST, firstname);
-        values.put(FriendsTable.COLUMN_LAST, "last_name_test");
-        values.put(FriendsTable.COLUMN_EMAIL, "shithead@fun.com");
+        values.put(FriendsTable.COLUMN_LAST, lastname);
+        values.put(FriendsTable.COLUMN_EMAIL, email);
         values.put(FriendsTable.COLUMN_MESSAGE, "I like potatoes!!");
         long insertId = database.insert(FriendsTable.TABLE_NAME, null,
                 values);

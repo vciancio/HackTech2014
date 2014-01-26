@@ -194,15 +194,24 @@ public class ServerComm {
                             response.getInt(Constants.ERROR));
                 return false;
             }
-            // TODO: Add new fried to our database either in here or in the Friends Fragment
+
+            // Add Friend to database here
+            FriendsDatabase friendsData = new FriendsDatabase(context);
+            friendsData.open();
+
+            // Get node id, first name, and last name from database
+            String nodeId = response.getString(Constants.USER_NODE_ID);
+            String firstName = response.getString(Constants.URL_ARG_F_NAME);
+            String lastName = response.getString(Constants.URL_ARG_L_NAME);
+
+            // And insert friend to database
+            friendsData.createFriend(nodeId, firstName, lastName, email);
+
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
 
-        // TODO: Add Friend to database here
-        FriendsDatabase friendsData = new FriendsDatabase(context);
-        friendsData.open();
 
 
 
