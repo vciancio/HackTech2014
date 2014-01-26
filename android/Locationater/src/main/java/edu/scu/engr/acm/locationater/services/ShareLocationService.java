@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import edu.scu.engr.acm.locationater.util.Constants;
 import edu.scu.engr.acm.locationater.util.ServerComm;
@@ -29,18 +30,18 @@ public class ShareLocationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-
+        Log.i("ShareLocationService", "Got eID: " + intent.getExtras().getInt(Constants.EVENT_NODE_ID));
         ServerComm comms = new ServerComm();
+        comms.confirmEvent(intent.getExtras().getInt(Constants.EVENT_NODE_ID), getBaseContext());
         comms.sendLocation(sp.getLong(Constants.LONGITUTDE, 0), sp.getLong(Constants.LATITUDE, 0),
-                System.currentTimeMillis(), intent.getExtras().getInt(Constants.ID_EVENT), getBaseContext());
-
+                System.currentTimeMillis(), intent.getExtras().getInt(Constants.EVENT_NODE_ID), getBaseContext());
         Intent i = new Intent(this, EventListeningService.class);
         startService(i);
 
         NotificationManager notificationManager = (NotificationManager)
                 getSystemService(NOTIFICATION_SERVICE);
 
-        notificationManager.cancel(3309);
+        notificationManager.cancel(intent.getExtras().getInt(Constants.EVENT_NODE_ID));
 
         stopSelf();
         return START_STICKY;

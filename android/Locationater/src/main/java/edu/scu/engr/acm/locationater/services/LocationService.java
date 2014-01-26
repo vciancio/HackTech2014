@@ -1,6 +1,5 @@
 package edu.scu.engr.acm.locationater.services;
 
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -15,8 +14,6 @@ import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Date;
 
 import edu.scu.engr.acm.locationater.util.Constants;
 import edu.scu.engr.acm.locationater.util.ServerComm;
@@ -71,12 +68,12 @@ public class LocationService extends Service {
             locationJson.put(Constants.LATITUDE, location.getLatitude());
             locationJson.put(Constants.LONGITUTDE, location.getLongitude());
             sp.edit().putString(Constants.JSON_LOCATION, locationJson.toString()).commit();
-            if (sp.getInt(Constants.ID_EVENT, -1) != -1) {
+            if (sp.getInt(Constants.EVENT_NODE_ID, -1) != -1) {
                 if (Constants.DEBUGGING)
-                    Log.i("LocationService", "Sending to Server, event_id: " + sp.getInt(Constants.ID_EVENT, -1));
+                    Log.i("LocationService", "Sending to Server, event_id: " + sp.getInt(Constants.EVENT_NODE_ID, -1));
                 ServerComm comms = new ServerComm();
                 comms.sendLocation(location.getLatitude(), location.getLongitude(), System.currentTimeMillis() / 1000,
-                        sp.getInt(Constants.ID_EVENT, -1), getBaseContext());
+                        sp.getInt(Constants.EVENT_NODE_ID, -1), getBaseContext());
             }
         } catch (JSONException e) {
             e.printStackTrace();

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -22,8 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import edu.scu.engr.acm.locationater.R;
-
 /**
  * Created: vincente on 1/25/14.
  */
@@ -33,43 +30,55 @@ public class ServerComm {
 
     }
 
-    public boolean verifyUser(final String email, final String password) {
+    public boolean verifyUser(final String email, final String password, Context context) {
         // TODO: Implement a method to verify the user to log-in
-        List<NameValuePair> url_args = new ArrayList<NameValuePair>();
 
+        List<NameValuePair> url_args = new ArrayList<NameValuePair>();
+        url_args.add(new BasicNameValuePair(Constants.URL_ARG_EMAIL, email));
+        url_args.add(new BasicNameValuePair(Constants.URL_ARG_PASSWORD, password));
+
+        Object[] params = {Constants.URL_LOGIN, url_args};
+        SendInfo sendInfo = new SendInfo();
+        sendInfo.execute(params);
+        try {
+            JSONObject response = new JSONObject(String.valueOf(sendInfo.get()));
+            if (!response.getBoolean(Constants.SUCCESS)) {
+                Log.i("ServerComm:verifyUser", "Failed with an error number of: #" +
+                        response.getJSONObject(Constants.ERROR));
+                return false;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
         return true;
     }
 
-    //First Object in the array is the event id (int), the second is the name of the person whom
-    //Is requesting you to share your location (string)
-    public Object[] hasEvent() {
+    public String hasEvent(Context context) {
 
         List<NameValuePair> url_args = new ArrayList<NameValuePair>();
+        SharedPreferences sp = context.getSharedPreferences("cred", Context.MODE_PRIVATE);
+        url_args.add(new BasicNameValuePair(Constants.USER_NODE_ID, String.valueOf(sp.getInt(Constants.USER_NODE_ID, 0))));
+        url_args.add(new BasicNameValuePair(Constants.URL_ARG_PASSWORD, sp.getString(Constants.USER_PASSWORD, "")));
+
         Object[] args = {Constants.URL_GET_EVENTS, url_args};
-        JSONObject response = null;
-        int eventid = -1;
-        String name = "Missingno";
+
+        String response = null;
         SendInfo sendInfo = new SendInfo();
         sendInfo.execute(args);
 
         try {
-            response = new JSONObject(String.valueOf(sendInfo.get()));
-            eventid = response.getInt(Constants.ID_EVENT);
-            name = response.getString(Constants.USER_NAME);
+            response = String.valueOf(sendInfo.get());
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
-        Object[] passing = {String.valueOf(eventid), name};
         if (Constants.DEBUGGING)
-            Log.i("ServerComm", "Passing: " + eventid + ", " + name);
-        return passing;
+            Log.i("ServerComm", "Passing: " + response);
+        return response;
     }
 
     public boolean createUser(final String email, final String password,
@@ -112,16 +121,28 @@ public class ServerComm {
         return null;
     }
 
+    //Confirm the event so we don't keep on getting notifications about it.
+    public void confirmEvent(int eventId, Context context) {
+        SharedPreferences sp = context.getSharedPreferences("cred", Context.MODE_PRIVATE);
+        List<NameValuePair> url_args = new ArrayList<NameValuePair>();
+        url_args.add(new BasicNameValuePair(Constants.EVENT_NODE_ID, String.valueOf(eventId)));
+        url_args.add(new BasicNameValuePair(Constants.URL_ARG_PASSWORD, sp.getString(Constants.USER_PASSWORD, "")));
+        url_args.add(new BasicNameValuePair(Constants.USER_NODE_ID, String.valueOf(sp.getInt(Constants.USER_NODE_ID, 0))));
+        Object[] args = {Constants.URL_CONFIRM_EVENT, url_args};
+        SendInfo sendInfo = new SendInfo();
+        sendInfo.execute(args);
+    }
+
     //Returns distance as an integer
     public int sendLocation(final double latitude, final double longitude, long millis, int eventId, Context context) {
         SharedPreferences sp = context.getSharedPreferences("cred", Context.MODE_PRIVATE);
         List<NameValuePair> url_args = new ArrayList<NameValuePair>();
         url_args.add(new BasicNameValuePair(Constants.TIME, Long.toString(millis)));
-        url_args.add(new BasicNameValuePair(Constants.ID_EVENT, Integer.toString(eventId)));
+        url_args.add(new BasicNameValuePair(Constants.EVENT_NODE_ID, Integer.toString(eventId)));
         url_args.add(new BasicNameValuePair(Constants.LATITUDE, Double.toString(latitude)));
         url_args.add(new BasicNameValuePair(Constants.LONGITUTDE, Double.toString(longitude)));
-        url_args.add(new BasicNameValuePair(Constants.USER_NODE_ID, sp.getString(Constants.USER_NODE_ID, "")));
         url_args.add(new BasicNameValuePair(Constants.URL_ARG_PASSWORD, sp.getString(Constants.USER_PASSWORD, "")));
+        url_args.add(new BasicNameValuePair(Constants.USER_NODE_ID, String.valueOf(sp.getInt(Constants.USER_NODE_ID, 0))));
         Object[] args = {Constants.URL_SEND_LOCATION, url_args};
         SendInfo sendInfo = new SendInfo();
         sendInfo.execute(args);
@@ -144,7 +165,7 @@ public class ServerComm {
         List<NameValuePair> url_args = new ArrayList<NameValuePair>();
         url_args.add(new BasicNameValuePair(Constants.URL_ARG_EMAIL, email));
         url_args.add(new BasicNameValuePair(Constants.USER_NODE_ID,
-                sp.getString(Constants.USER_NODE_ID, "")));
+                String.valueOf(sp.getInt(Constants.USER_NODE_ID, 0))));
         url_args.add(new BasicNameValuePair(Constants.URL_ARG_PASSWORD,
                 sp.getString(Constants.USER_PASSWORD, "")));
 
@@ -161,7 +182,7 @@ public class ServerComm {
                             response.getInt(Constants.ERROR));
                 return false;
             }
-
+            // TODO: Add new fried to our database either in here or in the Friends Fragment
         } catch (Exception e) {
             e.printStackTrace();
             return false;
