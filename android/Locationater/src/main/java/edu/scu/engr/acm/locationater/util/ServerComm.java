@@ -3,6 +3,7 @@ package edu.scu.engr.acm.locationater.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import org.apache.http.HttpResponse;
@@ -128,6 +129,17 @@ public class ServerComm {
         url_args.add(new BasicNameValuePair(Constants.EVENT_NODE_ID, String.valueOf(eventId)));
         url_args.add(new BasicNameValuePair(Constants.URL_ARG_PASSWORD, sp.getString(Constants.USER_PASSWORD, "")));
         url_args.add(new BasicNameValuePair(Constants.USER_NODE_ID, String.valueOf(sp.getInt(Constants.USER_NODE_ID, 0))));
+
+        //Get the less-secure stuff like current position, etc.
+        sp = PreferenceManager.getDefaultSharedPreferences(context);
+        try {
+            JSONObject locationJSON = new JSONObject(sp.getString(Constants.JSON_LOCATION, ""));
+            url_args.add(new BasicNameValuePair(Constants.LATITUDE, String.valueOf(locationJSON.get(Constants.LATITUDE))));
+            url_args.add(new BasicNameValuePair(Constants.LONGITUTDE, String.valueOf(locationJSON.get(Constants.LONGITUTDE))));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        url_args.add(new BasicNameValuePair(Constants.TIME, String.valueOf(System.currentTimeMillis())));
         Object[] args = {Constants.URL_CONFIRM_EVENT, url_args};
         SendInfo sendInfo = new SendInfo();
         sendInfo.execute(args);

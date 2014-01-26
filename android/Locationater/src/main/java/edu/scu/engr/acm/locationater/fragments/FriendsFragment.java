@@ -48,6 +48,8 @@ public class FriendsFragment extends Fragment {
         addFriendButton = (Button) rootView.findViewById(R.id.button_add_friend);
         friendArrayList = new ArrayList<Friend>();
         friendArrayAdapter = new FriendArrayAdapter(getActivity(), friendArrayList);
+        friendListView.setAdapter(friendArrayAdapter);
+
 
         // TODO: pull friends from the database asynchronously and update the friendArrayAdapter
 
