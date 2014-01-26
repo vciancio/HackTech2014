@@ -1,6 +1,7 @@
 package edu.scu.engr.acm.locationater.util;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
@@ -88,7 +89,8 @@ public class ServerComm {
         try {
             jsonResponse = new JSONObject(String.valueOf(sendInfo.get()));
             if (jsonResponse.getBoolean(Constants.SUCCESS)) {
-                jsonResponse.getInt(Constants.USER_NODE_ID);
+                SharedPreferences sp = context.getSharedPreferences("cred", Context.MODE_PRIVATE);
+                sp.edit().putInt(Constants.USER_NODE_ID, jsonResponse.getInt(Constants.USER_NODE_ID)).commit();
                 return true;
             } else {
                 Log.i("ServerConn:createUser", "Error Creating User in Database: #" +
@@ -111,14 +113,15 @@ public class ServerComm {
     }
 
     //Returns distance as an integer
-    public int sendLocation(final double latitude, final double longitude, long millis, int eventId) {
-
+    public int sendLocation(final double latitude, final double longitude, long millis, int eventId, Context context) {
+        SharedPreferences sp = context.getSharedPreferences("cred", Context.MODE_PRIVATE);
         List<NameValuePair> url_args = new ArrayList<NameValuePair>();
-        url_args.add(new BasicNameValuePair(Constants.LATITUDE, Double.toString(latitude)));
-        url_args.add(new BasicNameValuePair(Constants.LONGITUTDE, Double.toString(longitude)));
-        url_args.add(new BasicNameValuePair(Constants.USER_EMAIL, "vciancio@socaldevs.com"));
         url_args.add(new BasicNameValuePair(Constants.TIME, Long.toString(millis)));
         url_args.add(new BasicNameValuePair(Constants.ID_EVENT, Integer.toString(eventId)));
+        url_args.add(new BasicNameValuePair(Constants.LATITUDE, Double.toString(latitude)));
+        url_args.add(new BasicNameValuePair(Constants.LONGITUTDE, Double.toString(longitude)));
+        url_args.add(new BasicNameValuePair(Constants.USER_NODE_ID, sp.getString(Constants.USER_NODE_ID, "")));
+        url_args.add(new BasicNameValuePair(Constants.URL_ARG_PASSWORD, sp.getString(Constants.USER_PASSWORD, "")));
         Object[] args = {Constants.URL_SEND_LOCATION, url_args};
         SendInfo sendInfo = new SendInfo();
         sendInfo.execute(args);
@@ -137,34 +140,38 @@ public class ServerComm {
 
     public boolean addFriend(String email, Context context) {
         SendInfo sendInfo = new SendInfo();
-
+        SharedPreferences sp = context.getSharedPreferences("cred", Context.MODE_PRIVATE);
         List<NameValuePair> url_args = new ArrayList<NameValuePair>();
         url_args.add(new BasicNameValuePair(Constants.URL_ARG_EMAIL, email));
+        url_args.add(new BasicNameValuePair(Constants.USER_NODE_ID,
+                sp.getString(Constants.USER_NODE_ID, "")));
+        url_args.add(new BasicNameValuePair(Constants.URL_ARG_PASSWORD,
+                sp.getString(Constants.USER_PASSWORD, "")));
 
-        Object[] args = {Constants.URL_ADD_USER, url_args};
+        Object[] args = {Constants.URL_ADD_FRIEND, url_args};
         sendInfo.execute(args);
 
         JSONObject response = null;
+
         try {
             response = new JSONObject(String.valueOf(sendInfo.get()));
+            if (!response.getBoolean(Constants.SUCCESS)) {
+                if (Constants.DEBUGGING)
+                    Log.i("ServerConn:addFriend", "Failed with error: #" +
+                            response.getInt(Constants.ERROR));
+                return false;
+            }
 
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
+            return false;
         }
 
-        if (response == null)
-            return false;
-
-        // TODO: Finish Add Friend to database here
+        // TODO: Add Friend to database here
         FriendsDatabase friendsData = new FriendsDatabase(context);
         friendsData.open();
-        friendsData.createFriend("Little Timmy");
 
-        List<Friend> values = friendsData.getAllFriends();
+
 
         return true;
     }
