@@ -26,9 +26,9 @@ public class FriendsTable extends SQLiteOpenHelper {
             + TABLE_NAME + "("
             + COLUMN_ID + " integer primary key autoincrement, "
             + COLUMN_NODEID + " integer, "
-            + COLUMN_FIRST + " text not null"
-            + COLUMN_LAST + " text not null"
-            + COLUMN_EMAIL + " text not null"
+            + COLUMN_FIRST + " text not null,"
+            + COLUMN_LAST + " text not null,"
+            + COLUMN_EMAIL + " text not null,"
             + COLUMN_MESSAGE + " text not null"
             + ");";
 
