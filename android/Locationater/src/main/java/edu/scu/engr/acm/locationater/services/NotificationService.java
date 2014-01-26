@@ -3,10 +3,7 @@ package edu.scu.engr.acm.locationater.services;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
@@ -35,7 +32,7 @@ public class NotificationService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Bundle bundle = intent.getExtras();
         String name = bundle.getString(Constants.USER_NAME);
-        String eventid = bundle.getString(Constants.ID_EVENT);
+        String eventid = bundle.getString(Constants.EVENT_NODE_ID);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
         if (Constants.DEBUGGING)
@@ -47,7 +44,7 @@ public class NotificationService extends Service {
                 builder.setContentText("Share location with " + name + "?");
                 Intent shareIntent = new Intent(this, ShareLocationService.class);
                 Bundle extras = new Bundle();
-                extras.putString(Constants.ID_EVENT, eventid);
+                extras.putString(Constants.EVENT_NODE_ID, eventid);
                 shareIntent.putExtras(extras);
                 PendingIntent pendingShareIntent =
                         PendingIntent.getService(getBaseContext(), 0, shareIntent, 0);

@@ -55,14 +55,14 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        startService(new Intent(this, LocationService.class));
+        //startService(new Intent(this, LocationService.class));
         SharedPreferences sp = getSharedPreferences("cred", MODE_PRIVATE);
         if (!sp.getString(Constants.USER_EMAIL, "").isEmpty() &&
                 !sp.getString(Constants.USER_PASSWORD, "").isEmpty()) {
             if (Constants.DEBUGGING)
                 Log.i("LoginActivity", "Already Logged in, going to Main Activity!");
             Intent i = new Intent(this, MainActivity.class);
-            finish();
+            //finish();
             startActivity(i);
         }
 
@@ -114,7 +114,7 @@ public class LoginActivity extends Activity {
 
         /* Temp Placeholder to circumvent the login sequence
         Intent i = new Intent(this, MainActivity.class);
-        finish();
+        //finish();
         this.startActivity(i);
         /* */
 
@@ -218,15 +218,20 @@ public class LoginActivity extends Activity {
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
             ServerComm comms = new ServerComm();
-            return comms.verifyUser(mEmail, mPassword);
+            if (Constants.DEBUGGING)
+                Log.i("LoginActivity:doInBackground", "Starting verification with params: " +
+                        mEmail + " Pass: " + mPassword);
+
+            return false; //comms.verifyUser(mEmail, mPassword, getApplication());
         }
 
         @Override
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
             showProgress(false);
-
-            if (success) {
+            if (Constants.DEBUGGING)
+                Log.i("LoginActivity:onPostExecute", "Success at Logging in: " + success);
+            if (!success) {
                 Intent i = new Intent(getApplicationContext(), SignUpActivity.class);
                 Bundle extras = new Bundle();
                 extras.putString(Constants.USER_EMAIL, mEmail);
@@ -236,8 +241,11 @@ public class LoginActivity extends Activity {
                 startActivity(i);
 
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
+//              mPasswordView.setError(getString(R.string.error_incorrect_password));
+//              mPasswordView.requestFocus();
+                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                finish();
+                startActivity(i);
             }
         }
 

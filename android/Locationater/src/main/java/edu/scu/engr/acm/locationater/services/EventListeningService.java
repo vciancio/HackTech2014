@@ -33,7 +33,7 @@ public class EventListeningService extends Service {
         //Intent that will be called by either
         Intent i = null;
         Bundle extras = new Bundle();
-        extras.putInt(Constants.ID_EVENT, event_id);
+        extras.putInt(Constants.EVENT_NODE_ID, event_id);
         extras.putString(Constants.USER_NAME, name);
 
         //Check the Info to see if we have a valid event_id

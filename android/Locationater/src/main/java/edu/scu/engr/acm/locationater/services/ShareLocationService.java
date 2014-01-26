@@ -32,7 +32,7 @@ public class ShareLocationService extends Service {
 
         ServerComm comms = new ServerComm();
         comms.sendLocation(sp.getLong(Constants.LONGITUTDE, 0), sp.getLong(Constants.LATITUDE, 0),
-                System.currentTimeMillis(), intent.getExtras().getInt(Constants.ID_EVENT), getBaseContext());
+                System.currentTimeMillis(), intent.getExtras().getInt(Constants.EVENT_NODE_ID), getBaseContext());
 
         Intent i = new Intent(this, EventListeningService.class);
         startService(i);
