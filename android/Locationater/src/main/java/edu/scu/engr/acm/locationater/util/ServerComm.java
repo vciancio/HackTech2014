@@ -1,7 +1,9 @@
 package edu.scu.engr.acm.locationater.util;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -10,6 +12,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -67,11 +70,34 @@ public class ServerComm {
     }
 
     public boolean createUser(final String email, final String password,
-                              final String firstName, final String lastName) {
+                              final String firstName, final String lastName, Context context) {
         // TODO: Implement a method to verify the user to log-in
         List<NameValuePair> url_args = new ArrayList<NameValuePair>();
+        url_args.add(new BasicNameValuePair(Constants.URL_ARG_EMAIL, email));
+        url_args.add(new BasicNameValuePair(Constants.URL_ARG_PASSWORD, password));
+        url_args.add(new BasicNameValuePair(Constants.URL_ARG_F_NAME, firstName));
+        url_args.add(new BasicNameValuePair(Constants.URL_ARG_L_NAME, lastName));
 
-        return true;
+        Object[] params = {Constants.URL_ADD_USER, url_args};
+        SendInfo sendInfo = new SendInfo();
+        sendInfo.execute(params);
+        JSONObject jsonResponse = null;
+
+        try {
+            jsonResponse = new JSONObject(String.valueOf(sendInfo.get()));
+            if (jsonResponse.getBoolean(Constants.SUCCESS)) {
+                jsonResponse.getInt(Constants.USER_NODE_ID);
+                return true;
+            } else {
+                Log.i("ServerConn:createUser", "Error Creating User in Database: #" +
+                        jsonResponse.getInt(Constants.ERROR));
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
     }
 
     public JSONArray getFriends(final String email, final String password) {
@@ -146,7 +172,7 @@ public class ServerComm {
             try {
                 httpPost.setEntity(new UrlEncodedFormEntity((List<NameValuePair>) params[1]));
                 HttpResponse response = httpClient.execute(httpPost);
-                return response.getEntity().getContent().toString();
+                return EntityUtils.toString(response.getEntity());
             } catch (Exception e) {
                 e.printStackTrace();
                 return false;
