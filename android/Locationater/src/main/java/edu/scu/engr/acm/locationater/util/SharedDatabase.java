@@ -23,7 +23,10 @@ public class SharedDatabase {
             SharedTable.COLUMN_FIRST,
             SharedTable.COLUMN_LAST,
             SharedTable.COLUMN_EMAIL,
-            SharedTable.COLUMN_MESSAGE
+            SharedTable.COLUMN_MESSAGE,
+            SharedTable.COLUMN_DISTANCE,
+            SharedTable.COLUMN_VELOCITY,
+            SharedTable.COLUMN_ETA
     };
 
     public SharedDatabase(Context context) {

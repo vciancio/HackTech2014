@@ -1,7 +1,9 @@
 package edu.scu.engr.acm.locationater.util;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -17,6 +19,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+
+import edu.scu.engr.acm.locationater.R;
 
 /**
  * Created: vincente on 1/25/14.
@@ -107,7 +111,7 @@ public class ServerComm {
         return distance;
     }
 
-    public boolean addFriend(String email) {
+    public boolean addFriend(String email, Context context) {
         SendInfo sendInfo = new SendInfo();
 
         List<NameValuePair> url_args = new ArrayList<NameValuePair>();
@@ -131,6 +135,9 @@ public class ServerComm {
             return false;
 
         // TODO: Add Friend to database here
+        FriendsDatabase friendsData = new FriendsDatabase(context);
+        friendsData.open();
+
         return true;
     }
 

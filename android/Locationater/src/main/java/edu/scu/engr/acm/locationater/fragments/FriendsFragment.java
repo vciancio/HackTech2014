@@ -78,7 +78,7 @@ public class FriendsFragment extends Fragment {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String email = input.getText().toString();
                 ServerComm comm = new ServerComm();
-                if (comm.addFriend(email)) {
+                if (comm.addFriend(email, getActivity())) {
                     Toast.makeText(getActivity(), R.string.dialog_friend_add_successful,
                             Toast.LENGTH_SHORT).show();
                     friendArrayAdapter.notifyDataSetChanged();
