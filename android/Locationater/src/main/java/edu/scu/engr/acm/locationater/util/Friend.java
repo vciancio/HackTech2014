@@ -3,7 +3,7 @@ package edu.scu.engr.acm.locationater.util;
 /**
  * Created by lauren on 1/25/14.
  */
-public class SharedSetGet {
+public class Friend {
 
     private long id;
     private long nodeid;
@@ -11,9 +11,6 @@ public class SharedSetGet {
     private String lastname;
     private String email;
     private String message;
-    private long distance;
-    private long velocity;
-    private long eta;
 
     public long getId() {
         return id;
@@ -63,34 +60,14 @@ public class SharedSetGet {
         this.message = message;
     }
 
-    public long getDistance() {
-        return distance;
-    }
-
-    public void setDistance(long distance) {
-        this.distance = distance;
-    }
-
-    public long getVelocity() {
-        return velocity;
-    }
-
-    public void setVelocity(long velocity) {
-        this.velocity = velocity;
-    }
-
-    public long getETA() {
-        return eta;
-    }
-
-    public void setETA(long eta) {
-        this.eta = eta;
-    }
-
     // Will be used by the ArrayAdapter in the ListView
     @Override
     public String toString() {
         return message;
     }
+
+
+
+
 
 }

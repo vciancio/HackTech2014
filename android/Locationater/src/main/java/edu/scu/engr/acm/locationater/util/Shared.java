@@ -3,7 +3,7 @@ package edu.scu.engr.acm.locationater.util;
 /**
  * Created by lauren on 1/25/14.
  */
-public class SharingSetGet {
+public class Shared {
 
     private long id;
     private long nodeid;
@@ -24,7 +24,7 @@ public class SharingSetGet {
     }
 
     public long getnodeid() {
-        return id;
+        return nodeid;
     }
 
     public void setnodeid(long nodeid) {
@@ -72,7 +72,7 @@ public class SharingSetGet {
     }
 
     public long getVelocity() {
-        return id;
+        return velocity;
     }
 
     public void setVelocity(long velocity) {
@@ -92,4 +92,5 @@ public class SharingSetGet {
     public String toString() {
         return message;
     }
+
 }
