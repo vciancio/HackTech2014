@@ -69,13 +69,13 @@ public class LocationService extends Service {
             locationJson.put(Constants.LONGITUTDE, location.getLongitude());
             sp.edit().putString(Constants.JSON_LOCATION, locationJson.toString()).commit();
             /* If a certain flag is given (we still have events), we will send our information to the server */
-            if (sp.getInt(Constants.EVENT_NODE_ID, -1) != -1) {
-                if (Constants.DEBUGGING)
-                    Log.i("LocationService", "Sending to Server, event_id: " + sp.getInt(Constants.EVENT_NODE_ID, -1));
+//            if (sp.getInt(Constants.EVENT_NODE_ID, -1) != -1) {
+            if (Constants.DEBUGGING)
+                Log.i("LocationService", "Sending to Server, event_id: " + sp.getInt(Constants.EVENT_NODE_ID, -1));
                 ServerComm comms = new ServerComm();
-                comms.sendLocation(location.getLatitude(), location.getLongitude(), System.currentTimeMillis() / 1000,
-                        sp.getInt(Constants.EVENT_NODE_ID, -1), getBaseContext());
-            }
+            comms.sendLocation(location.getLatitude(), location.getLongitude(), System.currentTimeMillis(),
+                    sp.getInt(Constants.EVENT_NODE_ID, -1), getBaseContext());
+//            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -139,7 +139,7 @@ public class ServerComm {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        url_args.add(new BasicNameValuePair(Constants.TIME, String.valueOf(System.currentTimeMillis() / 1000)));
+        url_args.add(new BasicNameValuePair(Constants.TIME, String.valueOf(System.currentTimeMillis())));
         Object[] args = {Constants.URL_CONFIRM_EVENT, url_args};
         SendInfo sendInfo = new SendInfo();
         sendInfo.execute(args);
