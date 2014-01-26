@@ -147,6 +147,7 @@ public class ServerComm {
         JSONObject response = null;
         try {
             response = new JSONObject(String.valueOf(sendInfo.get()));
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -158,9 +159,12 @@ public class ServerComm {
         if (response == null)
             return false;
 
-        // TODO: Add Friend to database here
+        // TODO: Finish Add Friend to database here
         FriendsDatabase friendsData = new FriendsDatabase(context);
         friendsData.open();
+        friendsData.createFriend("Little Timmy");
+
+        List<Friend> values = friendsData.getAllFriends();
 
         return true;
     }

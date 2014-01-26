@@ -39,9 +39,9 @@ public class FriendsDatabase {
         friendsTable.close();
     }
 
-    public Friend createFriend(String friend) {
+    public Friend createFriend(String firstname) {
         ContentValues values = new ContentValues();
-        values.put(FriendsTable.COLUMN_FIRST, "first_name_test");
+        values.put(FriendsTable.COLUMN_FIRST, firstname);
         values.put(FriendsTable.COLUMN_LAST, "last_name_test");
         values.put(FriendsTable.COLUMN_EMAIL, "shithead@fun.com");
         values.put(FriendsTable.COLUMN_MESSAGE, "I like potatoes!!");
