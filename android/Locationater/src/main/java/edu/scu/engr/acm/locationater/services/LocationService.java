@@ -76,7 +76,7 @@ public class LocationService extends Service {
                     Log.i("LocationService", "Sending to Server, event_id: " + sp.getInt(Constants.ID_EVENT, -1));
                 ServerComm comms = new ServerComm();
                 comms.sendLocation(location.getLatitude(), location.getLongitude(), System.currentTimeMillis() / 1000,
-                        sp.getInt(Constants.ID_EVENT, -1));
+                        sp.getInt(Constants.ID_EVENT, -1), getBaseContext());
             }
         } catch (JSONException e) {
             e.printStackTrace();

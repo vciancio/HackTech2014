@@ -29,6 +29,7 @@ public class Constants {
     //http://ec2-54-193-61-57.us-west-1.compute.amazonaws.com/cgi-bin/server/AddUser.py?E=none@all.com&P=shithead&F=Billy&L=Bob
     public static final String URL_BASE = "http://ec2-54-193-61-57.us-west-1.compute.amazonaws.com/cgi-bin/server";
     public static final String URL_ADD_USER = URL_BASE + "/AddUser.py";
+    public static final String URL_ADD_FRIEND = URL_BASE + "/AddFriend.py";
     public static final String URL_ADD_EVENT = URL_BASE + "/AddEvent.py";
     public static final String URL_GET_EVENTS = URL_BASE + "/EventRequest.py";
     public static final String URL_SEND_LOCATION = URL_BASE + "/UpdateLocation.py";
