@@ -35,7 +35,7 @@ public class SharedSetGet {
         return firstname;
     }
 
-    public String setfirstname(String firstname) {
+    public void setfirstname(String firstname) {
         this.firstname = firstname;
     }
 
@@ -43,7 +43,7 @@ public class SharedSetGet {
         return lastname;
     }
 
-    public String setlastname(String lastname) {
+    public void setlastname(String lastname) {
         this.lastname = lastname;
     }
 
@@ -51,7 +51,7 @@ public class SharedSetGet {
         return email;
     }
 
-    public String setEmail(String email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
@@ -92,7 +92,5 @@ public class SharedSetGet {
     public String toString() {
         return message;
     }
-
-
 
 }

@@ -33,7 +33,7 @@ public class FriendsSetGet {
         return firstname;
     }
 
-    public String setfirstname(String firstname) {
+    public void setfirstname(String firstname) {
         this.firstname = firstname;
     }
 
@@ -41,7 +41,7 @@ public class FriendsSetGet {
         return lastname;
     }
 
-    public String setlastname(String lastname) {
+    public void setlastname(String lastname) {
         this.lastname = lastname;
     }
 
@@ -49,7 +49,7 @@ public class FriendsSetGet {
         return email;
     }
 
-    public String setEmail(String email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
